@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <nav class="bg-blue-500 p-4 flex justify-between items-center">
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-2">
+        <h1 class="text-white text-lg font-semibold">Bookstore</h1>
+      </div>
+
+      <!-- Menu Items -->
+      <div class="flex items-center space-x-4">
+        <!-- Home -->
+        <a href="/book-store" class="text-white hover:text-gray-200">Home</a>
+        <!-- Add Book -->
+        <a href="addBook" class="text-white hover:text-gray-200">Add Book</a>
+        <!-- Logout -->
+        <a href="/v1/logout" class="text-white hover:text-gray-200">Logout</a>
+        <!-- Profile -->
+        <div class="relative">
+          <a class="flex items-center justify-center bg-white text-blue-500 rounded-full w-10 h-10 focus:outline-none cursor-pointer"
+            href="/profile">
+            <img src="<%= profileImage %>" alt="profileImage" class="object-cover rounded-full w-full h-full">
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="bg-white">
+      <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Trending Books</h2>
+
+        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          <% data.forEach(item=> { %>
+            <div class="group relative">
+              <div
+                class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                <img src="<%= item.bookImage  %>" alt="Front of men&#039;s Basic Tee in black."
+                  class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+              </div>
+              <div class="mt-4 flex justify-between">
+                <div>
+                  <h3 class="text-sm text-gray-700">
+                    <a href="#">
+                      <span aria-hidden="true" class="absolute inset-0"></span>
+                      <%= item.bookName %>
+                    </a>
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">
+                    Publisher :
+                    <%= item.publisher.name %>
+                  </p>
+                </div>
+                <p class="text-sm font-medium text-gray-900">
+                  <%= item.bookPrice %>Rs
+                </p>
+              </div>
+            </div>
+            <% }) %>
+
+              <!-- More products... -->
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
