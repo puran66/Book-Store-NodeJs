@@ -8,7 +8,9 @@ const userAuth = async (req, res, next) => {
       res.redirect('/v1/login')
     }
 
-    const verified = await jwt.verify(token, process.env.SECRETKEY);
+    const verified = jwt.verify(token, process.env.SECRETKEY);
+
+    // console.log(verified);
 
     next();
 

@@ -63,7 +63,7 @@ const login = async (req, res) => {
     }
 
     const isUser = await userServices.isUser(email);
-    console.log(isUser);
+    // console.log(isUser);
 
     if(isUser != []){
       const token =  userServices.createToken(isUser);

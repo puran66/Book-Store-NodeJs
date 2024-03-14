@@ -15,31 +15,30 @@
 
 <body class="bg-gray-100 h-screen flex items-center justify-center">
 
-    <div class="max-w-md w-full p-6 bg-white rounded-md shadow-md">
-      <form action="/change_password" method="get"></form>
+  <div class="max-w-md w-full p-6 bg-white rounded-md shadow-md">
+    <form action="/change_password" method="post">
       <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Generate OTP</h1>
 
       <!-- OTP Field -->
       <div class="mb-4">
         <label for="otp" class="block text-sm font-medium text-gray-600">OTP</label>
         <input type="text" id="otp" name="otp" class="mt-1 p-2 w-full border rounded-md" onchange="getOtp(e)">
-        <p id="successMessage" class="text-green-500 mt-2">
+        <p id="successMessage" class="<%= style  %>">
           <%= message %>
         </p>
       </div>
 
       <!-- OTP Generation Button -->
-      <button type="button" class="bg-green-500 text-white px-4 py-2 rounded-full focus:outline-none"><a href="/generate_otp">Generate OTP</a></button>
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full focus:outline-none"
-        >Submit</button>
-      </form>
-    </div>
-<!-- 
-  <script>
-    function handleOtpSend() {
-      window.location.href = '/change_password';
-    }
-  </script> -->
+      <button type="button" class="bg-green-500 text-white px-4 py-2 rounded-full focus:outline-none">
+        <a href="/generate_otp">Generate OTP</a>
+      </button>
+
+      <!-- Submit Button -->
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full focus:outline-none">
+        Submit
+      </button>
+    </form>
+  </div>
 
 </body>
 

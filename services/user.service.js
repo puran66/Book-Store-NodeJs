@@ -24,7 +24,7 @@ const createToken = (user) => {
 
 const findId = (token) => {
   const user = jwt.verify(token, process.env.SECRETKEY)
-  return user.user[0]._id;
+  return user.user._id == undefined ? user.user[0]._id : user.user._id;
 }
 
 const findUserByToken = (token) =>{

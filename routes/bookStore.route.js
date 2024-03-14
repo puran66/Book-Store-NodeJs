@@ -12,6 +12,14 @@ router.get('/edit-profile', userAuth, bookStoreController.editProfile)
 router.post('/update-profile', userAuth, upload.single('profileImage'), bookStoreController.updateProfile)
 router.get('/otpValidate',userAuth,bookStoreController.otpPage)
 router.get('/generate_otp',userAuth,bookStoreController.sendOtp);
-router.get('/change_password',userAuth,bookStoreController.changePasswordpage)
+router.post('/change_password',userAuth,bookStoreController.changePasswordpage)
+router.post('/new_password',userAuth,bookStoreController.changePassword)
+router.get('/cart',userAuth,bookStoreController.showCart)
+router.get('/addCartItems/:id',userAuth,bookStoreController.addCartItems)
+router.get('/cart-quantity-plus/:id',userAuth,bookStoreController.addQuantity)
+router.get('/cart-quantity-minus/:id',userAuth,bookStoreController.minusQuantity)
+router.get('/delete-cart-item/:id',userAuth,bookStoreController.removeFromCart)
+router.get('/payment',userAuth,bookStoreController.paymentPage)
+router.get('/thank-you',userAuth,bookStoreController.thankYou)
 
 module.exports = router;

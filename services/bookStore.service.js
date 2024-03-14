@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { BookSchema, userSchema } = require("../model")
+const { BookSchema, userSchema, userCartSchema } = require("../model")
 const jwt = require('jsonwebtoken')
 
 const addBook = (body, bookimg, userId) => {
@@ -13,7 +13,7 @@ const addBook = (body, bookimg, userId) => {
 }
 
 const getData = () => {
-  return BookSchema.find({}).populate('publisher');
+  return BookSchema.find({});
 }
 
 const getProfile = (token) => {
@@ -37,15 +37,56 @@ const updateToken = (user) => {
 }
 
 const findImage = (_id) => {
-  const user = userSchema.find({_id});
+  const user = userSchema.find({ _id });
 
   return user;
 }
 
-const getEmail = (token)=>{
-  const user = jwt.verify(token,process.env.SECRETKEY);
+const getEmail = (token) => {
+  const user = jwt.verify(token, process.env.SECRETKEY);
   // console.log(user.user.email);
   return user.user.email == undefined ? user.user[0].email : user.user.email;
 }
 
-module.exports = { addBook, getData, getProfile, updateProfile, updateToken ,findImage,getEmail }
+const getId = (token) => {
+  const user = jwt.verify(token, process.env.SECRETKEY);
+  // console.log(user.user.email);
+  return user.user._id == undefined ? user.user[0]._id : user.user._id;
+}
+
+const updatePassword = (id, newPassword) => {
+  return userSchema.findByIdAndUpdate({ _id: id }, { password: newPassword })
+}
+
+const getItem = (_id) => {
+  return BookSchema.find({ _id })
+}
+
+const addCartItem = (cartItem) => {
+  return userCartSchema.create(cartItem);
+}
+const countTotalItems = () => {
+  return userCartSchema.find({}).populate('user')
+}
+
+const updateQuantity = (bookName, bookImage, bookPrice) => {
+  return userCartSchema.findOneAndUpdate({ itemIamge: bookImage, itemName: bookName, itemPrice: bookPrice }, { $inc: { quantity: 1 } });
+}
+
+const addQuantity = (_id) => {
+  return userCartSchema.findByIdAndUpdate({ _id }, { $inc: { quantity: 1 } })
+}
+
+const minusQuantity = (_id) => {
+  return userCartSchema.findByIdAndUpdate({ _id }, { $inc: { quantity: -1 } })
+}
+
+const deleteCart = () => {
+  return userCartSchema.deleteMany({})
+}
+
+const removeFromCart = (_id) => {
+  return userCartSchema.findByIdAndDelete({ _id })
+}
+
+module.exports = { addBook, getData, getProfile, updateProfile, updateToken, findImage, getEmail, getId, updatePassword, getItem, addCartItem, countTotalItems, updateQuantity, addQuantity, deleteCart, minusQuantity, removeFromCart }
