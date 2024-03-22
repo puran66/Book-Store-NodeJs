@@ -13,11 +13,11 @@
 
 <body class="bg-gray-100">
 
-  <div class="flex flex-col items-center container mx-auto px-4 py-8 w-full">
+  <div class="flex flex-col  items-center container mx-auto px-4 py-8 w-full">
     <h1 class="text-3xl font-semibold mb-4">Your Cart</h1>
 
     <!-- Cart Items -->
-    <div class="flex flex-col gap-4 mx-auto w-6/12">
+    <div class="flex flex-col gap-4 mx-auto smw-6/12 w-9/12">
       <!-- Cart Item -->
       <% cartItems.forEach(item=> { %>
         <div class="bg-white p-4 rounded-lg shadow-md">
@@ -52,40 +52,53 @@
         <% }) %>
     </div>
     <!-- Pricing Details -->
-    <div class="mt-8 w-6/12">
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-gray-700">Total Price</p>
-          <p class="text-gray-700">
-            <%= totalPrice %> Rs
-          </p> 
+    <div class="mt-8 sm:w-6/12 w-9/12">
+      <% if (emptyCart=="" ) { %>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+          <div class="flex justify-between items-center mb-4">
+            <p class="text-gray-700">Total Price</p>
+            <p class="text-gray-700">
+              <%= totalPrice %> Rs
+            </p>
+          </div>
+          <div class="flex justify-between items-center mb-4">
+            <p class="text-gray-700">GST (18%)</p>
+            <p class="text-gray-700">
+              <%= gst %> Rs
+            </p>
+          </div>
+          <div class="flex justify-between items-center mb-4">
+            <p class="text-gray-700">Shipping Charge</p>
+            <p class="text-gray-700">
+              <%= shipping %> Rs
+            </p>
+          </div>
+          <hr class="border-gray-300 mb-4">
+          <div class="flex justify-between items-center">
+            <p class="text-gray-800 font-semibold">Final Price</p>
+            <p class="text-gray-800 font-semibold">
+              <%= finalPrice %> Rs
+            </p>
+          </div>
         </div>
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-gray-700">GST (18%)</p>
-          <p class="text-gray-700">
-            <%= gst %> Rs
-          </p> 
-        </div>
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-gray-700">Shipping Charge</p>
-          <p class="text-gray-700">
-            <%= shipping %> Rs
-          </p> 
-        </div>
-        <hr class="border-gray-300 mb-4">
-        <div class="flex justify-between items-center">
-          <p class="text-gray-800 font-semibold">Final Price</p>
-          <p class="text-gray-800 font-semibold">
-            <%= finalPrice %> Rs
-          </p>
-        </div>
-      </div>
+        <% } else { %>
+          <h1 class="text-xl text-center py-8">Your cart is empty.</h1>
+          <% } %>
     </div>
 
+
     <!-- Checkout Button -->
-    <div class="mt-8 flex justify-end" onclick="handleCheckOut()">
-      <button
-        class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-300">Checkout</button>
+    <div class="mt-8 flex justify-end">
+      <% if (emptyCart=="" ) { %>
+        <button
+          class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-300"
+          onclick="handleCheckOut()">Checkout</button>
+        <% } else { %>
+          <button
+            class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition duration-300"
+            onclick="handleBackToHome()">Add
+            Books to cart Now!</button>
+          <% } %>
     </div>
   </div>
   </div>
@@ -108,6 +121,10 @@
     function handleCheckOut() {
 
       window.location.href = "/payment";
+    }
+
+    function handleBackToHome() {
+      window.location.href = "/book-store"
     }
 
     function handleDelete(id) {

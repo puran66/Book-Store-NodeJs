@@ -89,4 +89,7 @@ const removeFromCart = (_id) => {
   return userCartSchema.findByIdAndDelete({ _id })
 }
 
-module.exports = { addBook, getData, getProfile, updateProfile, updateToken, findImage, getEmail, getId, updatePassword, getItem, addCartItem, countTotalItems, updateQuantity, addQuantity, deleteCart, minusQuantity, removeFromCart }
+const deleteBook = (_id) =>{
+  return BookSchema.findByIdAndDelete({_id});
+}
+module.exports = { addBook, getData, getProfile, updateProfile, updateToken, findImage, getEmail, getId, updatePassword, getItem, addCartItem, countTotalItems, updateQuantity, addQuantity, deleteCart, minusQuantity, removeFromCart ,deleteBook }

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const userAuth = async (req, res, next) => {
+const userAutheticate = async (req, res, next) => {
   try {
     const token = req.cookies.token;
 
@@ -10,7 +10,9 @@ const userAuth = async (req, res, next) => {
 
     const verified = jwt.verify(token, process.env.SECRETKEY);
 
-    // console.log(verified);
+    console.log(verified.user[0]);
+
+    req.user = verified.user[0] == undefined ? verified.user : verified.user[0]
 
     next();
 
@@ -20,4 +22,18 @@ const userAuth = async (req, res, next) => {
   }
 }
 
-module.exports = userAuth;
+const auth = ([...role]) =>{
+
+  return (req,res,next)=>{
+    const user = req.user
+    // console.log(user);
+
+    if(role.includes(user.role)){
+        next()
+    }else{
+        res.status(403).redirect('/')
+    }
+  }
+}
+
+module.exports = {userAutheticate,auth}

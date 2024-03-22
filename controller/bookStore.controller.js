@@ -14,7 +14,8 @@ const bookStore = async (req, res) => {
     const user = await userServices.findUserByToken(token);
     // console.log(user);
     const profileImage = user.user.profileImage == undefined ? user.user[0].profileImage : user.user.profileImage;
-    // console.log(profileImage);
+    const role = user.user.role == undefined ? user.user[0].role : user.user.role;
+    // console.log(profileImage, role);
 
     const data = await bookStoreServices.getData();
     // console.log(data);
@@ -27,7 +28,7 @@ const bookStore = async (req, res) => {
     })
     // console.log(totalItems);
 
-    res.status(200).render('bookStore', { data: data, profileImage: profileImage, totalItems: totalItems })
+    res.status(200).render('bookStore', { data: data, profileImage: profileImage, totalItems: totalItems ,role:role })
   }
   catch (err) {
     console.log(err);
@@ -40,6 +41,18 @@ const addBookPage = async (req, res) => {
   }
   catch (err) {
     console.log(err);
+  }
+}
+
+const deleteBook =async (req,res) =>{
+  try {
+    const id = req.params.id;
+
+    const deleted = await bookStoreServices.deleteBook(id);
+
+    res.status(200).redirect('/book-store')
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -78,7 +91,7 @@ const profile = async (req, res) => {
 
     const getUser = await bookStoreServices.getProfile(token);
     const user = getUser.user[0] == undefined ? getUser.user : getUser.user[0]
-    console.log(user);
+    // console.log(user);
     const profileImage = user.profileImage;
 
 
@@ -98,10 +111,10 @@ const editProfile = async (req, res) => {
 
     const getUser = await bookStoreServices.getProfile(token);
     const user = getUser.user[0] == undefined ? getUser.user : getUser.user[0]
-    console.log(user);
+    // console.log(user);
 
     const profileImage = user.profileImage;
-    console.log(profileImage);
+    // console.log(profileImage);
 
     res.status(200).render('editProfile', { user, profileImage: profileImage })
   }
@@ -114,13 +127,13 @@ const updateProfile = async (req, res) => {
   try {
     const body = req.body;
     const img = req.file.path
-    console.log(body, img);
+    // console.log(body, img);
     if (!body || !img) {
       throw new Error("inputs required")
     }
 
     const profileImage = img.replace(/\\/g, "/").replace("D:/Full Stack Development/book-store-detail/public", "http://localhost:8000");
-    console.log(profileImage);
+    // console.log(profileImage);
 
     const updated = await bookStoreServices.updateProfile(body, profileImage);
 
@@ -249,11 +262,17 @@ const showCart = async (req, res) => {
 
     let shipping = 100;
 
+    let emptyCart = "";
+
+    if (totalPrice === 0 && gst === 0) {
+      emptyCart = "Your Cart is Empty";
+    }
+
     let finalPrice = parseFloat(gst + shipping + totalPrice).toFixed(2)
 
     // console.log(totalPrice, gst, shipping, finalPrice);
 
-    res.status(200).render('cart', { cartItems: cartItems, totalPrice, gst, shipping, finalPrice })
+    res.status(200).render('cart', { cartItems: cartItems, totalPrice, gst, shipping, finalPrice, emptyCart })
   }
   catch (err) {
     console.log(err);
@@ -296,7 +315,7 @@ const addCartItems = async (req, res) => {
       }
       // console.log(cartItem);
       const addedCartItems = await bookStoreServices.addCartItem(cartItem)
-      console.log(addedCartItems);
+      // console.log(addedCartItems);
 
     }
 
@@ -390,4 +409,4 @@ const removeFromCart = async (req, res) => {
   }
 }
 
-module.exports = { bookStore, addBookPage, addBook, profile, editProfile, updateProfile, otpPage, sendOtp, changePasswordpage, changePassword, showCart, addCartItems, addQuantity, minusQuantity, paymentPage, thankYou, removeFromCart };
+module.exports = { bookStore, addBookPage, addBook, profile, editProfile, updateProfile, otpPage, sendOtp, changePasswordpage, changePassword, showCart, addCartItems, addQuantity, minusQuantity, paymentPage, thankYou, removeFromCart ,deleteBook };

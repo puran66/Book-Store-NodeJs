@@ -1,12 +1,13 @@
 const { userSchema } = require("../model")
 const jwt = require('jsonwebtoken')
 
-const addUser = (name ,email, password, imgUrl) => {
+const addUser = (name ,email,role, password, imgUrl) => {
   return userSchema.create({
     email: email,
     name: name,
     password: password,
-    profileImage: imgUrl
+    profileImage: imgUrl,
+    role:role
   })
 }
 

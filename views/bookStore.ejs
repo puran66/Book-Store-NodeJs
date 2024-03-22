@@ -21,76 +21,138 @@
 
       <!-- Menu Items -->
       <div class="flex items-center space-x-4">
-        <!-- Home -->
-        <a href="/book-store" class="text-white hover:text-gray-200">Home</a>
-        <!-- Add Book -->
-        <a href="addBook" class="text-white hover:text-gray-200">Add Book</a>
-        <!-- Logout -->
-        <a href="/v1/logout" class="text-white hover:text-gray-200">Logout</a>
-        <!-- Cart -->
-        <div class="relative">
-          <a href="/cart" class="flex items-center text-white hover:text-gray-200 relative mr-4">
-            <i class="fas fa-shopping-cart text-xl"></i>
-            <span class="absolute -top-3 -right-3 px-2 py-1 bg-red-500 text-white rounded-full text-xs">
-              <%= totalItems %>
-            </span>
-          </a>
-        </div>
-        <!-- Profile -->
-        <div class="relative">
-          <a class="flex items-center justify-center bg-white text-blue-500 rounded-full w-10 h-10 focus:outline-none cursor-pointer"
-            href="/profile">
-            <img src="<%= profileImage %>" alt="profileImage" class="object-cover rounded-full w-full h-full">
-          </a>
-        </div>
+        <% if (role==="USER" ) { %>
+          <!-- Home -->
+          <a href="/book-store" class="text-white hover:text-gray-200">Home</a>
+          <% } %>
+            <% if (role==="ADMIN" ) { %>
+              <!-- Books -->
+              <a href="books" class="text-white hover:text-gray-200">Books</a>
+              <% } %>
+                <% if (role==="ADMIN" ) { %>
+                  <!-- Add Book -->
+                  <a href="addBook" class="text-white hover:text-gray-200">Add Book</a>
+                  <% } %>
+                    <% if (role==="ADMIN" ) { %>
+                      <!-- Create Admin -->
+                      <a href="/v1/create-admin" class="text-white hover:text-gray-200">Create Admin</a>
+                      <% } %>
+                        <!-- Logout -->
+                        <a href="/v1/logout" class="text-white hover:text-gray-200">Logout</a>
+                        <% if (role==="USER" ) { %>
+                          <!-- Cart -->
+                          <div class="relative">
+                            <a href="/cart" class="flex items-center text-white hover:text-gray-200 relative mr-4">
+                              <i class="fas fa-shopping-cart text-xl"></i>
+                              <span
+                                class="absolute -top-3 -right-3 px-2 py-1 bg-red-500 text-white rounded-full text-xs">
+                                <%= totalItems %>
+                              </span>
+                            </a>
+                          </div>
+                          <% } %>
+                            <!-- Profile -->
+                            <div class="relative">
+                              <a class="flex items-center justify-center bg-white text-blue-500 rounded-full w-10 h-10 focus:outline-none cursor-pointer"
+                                href="/profile">
+                                <img src="<%= profileImage %>" alt="profileImage"
+                                  class="object-cover rounded-full w-full h-full">
+                              </a>
+                            </div>
       </div>
     </nav>
 
   </header>
   <main>
-    <div class="bg-white">
-      <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Trending Books</h2>
+    <% if (role === "USER" ) { %>
+      <div class="User bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Trending Books</h2>
 
-        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          <% data.forEach(item=> { %>
-            <div class="group relative">
-              <div
-                class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="<%= item.bookImage  %>" alt="Front of men&#039;s Basic Tee in black."
-                  class="h-full w-full object-cover object-center lg:h-full lg:w-full">
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      <%= item.bookName %>
-                    </a>
-                    <p class="text-sm font-medium text-gray-900 mt-3">
-                      Price : <%= item.bookPrice %>Rs
-                    </p>
-                  </h3>
+          <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            <% data.forEach(item=> { %>
+              <div class="group relative">
+                <div
+                  class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                  <img src="<%= item.bookImage  %>" alt="Front of men&#039;s Basic Tee in black."
+                    class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                 </div>
-                <div>
-                  <button
-                    class="group relative flex items-center justify-center bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out"
-                    onclick="handleCart(`<%= item._id %>`)">
-                    Add to Cart
-                  </button>
+                <div class="mt-4 flex justify-between">
+                  <div>
+                    <h3 class="text-sm text-gray-700">
+                      <a href="#">
+                        <span aria-hidden="true" class="absolute inset-0"></span>
+                        <%= item.bookName %>
+                      </a>
+                      <p class="text-sm font-medium text-gray-900 mt-3">
+                        Price : <%= item.bookPrice %>Rs
+                      </p>
+                    </h3>
+                  </div>
+                  <div>
+                    <button
+                      class="group relative flex items-center justify-center bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out"
+                      onclick="handleCart(`<%= item._id %>`)">
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <% }) %>
+              <% }) %>
+          </div>
         </div>
       </div>
-    </div>
+      <% } else { %>
+        <div class="Admin bg-white">
+          <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900">Manage Books</h2>
+
+            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              <% data.forEach(item=> { %>
+                <div class="group relative">
+                  <div
+                    class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                    <img src="<%= item.bookImage  %>" alt="Front of men&#039;s Basic Tee in black."
+                      class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                  </div>
+                  <div class="mt-4 flex justify-between">
+                    <div>
+                      <h3 class="text-sm text-gray-700">
+                        <a href="#">
+                          <span aria-hidden="true" class="absolute inset-0"></span>
+                          <%= item.bookName %>
+                        </a>
+                        <p class="text-sm font-medium text-gray-900 mt-3">
+                          Price : <%= item.bookPrice %>Rs
+                        </p>
+                      </h3>
+                    </div>
+                    <div>
+                      <button
+                        class="group relative flex items-center justify-center bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out"
+                        onclick="handleDelete(`<%= item._id %>`)">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+            </div>
+          </div>
+        </div>
+        <% } %>
   </main>
   <script>
     function handleCart(id) {
       // console.log(id);
 
       let url = `/addCartItems/${id}`
+      // console.log(url);
+
+      window.location.href = url;
+    }
+    function handleDelete(id) {
+      let url = `/delete-book/${id}`
       // console.log(url);
 
       window.location.href = url;

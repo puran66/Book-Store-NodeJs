@@ -9,6 +9,15 @@ const signUpPage = (req, res) => {
   }
 }
 
+const createAdminPage = (req, res) => {
+  try {
+    res.status(200).render('createAdmin',{msg:""});
+  }
+  catch (err) {
+    console.log(err, "Error in create admin page");
+  }
+}
+
 const logout = (req, res) => {
   try {
     res.clearCookie('token').redirect('/v1/login');
@@ -20,7 +29,7 @@ const logout = (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { name ,email, password  } = req.body;
+    const { name, email, role, password } = req.body;
     const imgUrl = req.file.path;
 
     if (!email || !password || !name) {
@@ -35,7 +44,7 @@ const signUp = async (req, res) => {
       throw new Error("email already used!")
     }
 
-    const user = await userServices.addUser(name,email, password ,profileImage);
+    const user = await userServices.addUser(name, email, role, password, profileImage);
     // console.log(user,"this is the user dataa");
 
     res.status(201).redirect('/v1/login')
@@ -44,6 +53,36 @@ const signUp = async (req, res) => {
     console.log(err.message);
   }
 }
+
+const createAdmin = async (req, res) => {
+  try {
+    const { name, email, role, password } = req.body;
+    const imgUrl = req.file.path;
+    // console.log(role);
+
+    if (!email || !password || !name) {
+      throw new Error("email and password required");
+    }
+
+    const profileImage = imgUrl.replace(/\\/g, "/").replace("D:/Full Stack Development/book-store-detail/public", "http://localhost:8000/");
+
+    const isUser = await userServices.isUser(email);
+
+    if (isUser == []) {
+      throw new Error("email already used!")
+    }
+
+    const user = await userServices.addUser(name, email, role, password, profileImage);
+    // console.log(user,"this is the user dataa");
+
+    res.status(201).render('createAdmin', { msg: "Account created successfully!" })
+  }
+  catch (err) {
+    console.log(err.message);
+  }
+}
+
+
 
 const loginPage = (req, res) => {
   try {
@@ -65,11 +104,11 @@ const login = async (req, res) => {
     const isUser = await userServices.isUser(email);
     // console.log(isUser);
 
-    if(isUser != []){
-      const token =  userServices.createToken(isUser);
+    if (isUser != []) {
+      const token = userServices.createToken(isUser);
 
       res.status(200).cookie("token", token).redirect('/book-store');
-    }else{
+    } else {
       throw new Error("user not found! login first!")
     }
 
@@ -79,4 +118,4 @@ const login = async (req, res) => {
   }
 }
 
-module.exports = { signUpPage, signUp, login, logout, loginPage }
+module.exports = { signUpPage, signUp, login, logout, loginPage, createAdmin ,createAdminPage }
