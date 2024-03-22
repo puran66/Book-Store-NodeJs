@@ -50,7 +50,7 @@ const deleteBook =async (req,res) =>{
 
     const deleted = await bookStoreServices.deleteBook(id);
 
-    res.status(200).redirect('/book-store')
+    res.status(200).redirect('/')
   } catch (error) {
     console.log(error);
   }
@@ -75,7 +75,7 @@ const addBook = async (req, res) => {
 
     const book = await bookStoreServices.addBook(body, bookImage, userId);
 
-    res.status(201).redirect('/book-store');
+    res.status(201).redirect('/');
   }
   catch (err) {
     console.log(err);
@@ -319,7 +319,7 @@ const addCartItems = async (req, res) => {
 
     }
 
-    res.status(200).redirect('/book-store')
+    res.status(200).redirect('/')
   }
   catch (err) {
     console.log(err);

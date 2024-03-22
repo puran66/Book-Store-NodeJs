@@ -107,7 +107,7 @@ const login = async (req, res) => {
     if (isUser != []) {
       const token = userServices.createToken(isUser);
 
-      res.status(200).cookie("token", token).redirect('/book-store');
+      res.status(200).cookie("token", token).redirect('/');
     } else {
       throw new Error("user not found! login first!")
     }
