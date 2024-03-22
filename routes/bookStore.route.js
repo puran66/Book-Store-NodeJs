@@ -4,7 +4,7 @@ const { userAutheticate, auth } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const router = express.Router();
 
-router.get('/', userAutheticate, bookStoreController.bookStore)
+router.get('/book-store', userAutheticate, bookStoreController.bookStore)
 router.get('/addBook', userAutheticate, auth(["ADMIN"]), bookStoreController.addBookPage)
 router.get('/delete-book/:id', userAutheticate, auth(["ADMIN"]), bookStoreController.deleteBook)
 router.post('/addBook', userAutheticate, auth(["ADMIN"]), upload.single('bookImage'), bookStoreController.addBook)
